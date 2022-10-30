@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public AudioClip deathClip; // 사망시 재생할 오디오 클립
     public float jumpForce = 700f; // 점프 힘
+    private float topSpeed = 10f;
 
     private int jumpCount = 0; // 누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
@@ -30,28 +31,35 @@ public class PlayerController : MonoBehaviour
             // 사망시 처리를 더 이상 진행하지 않고 종료
             return;
         }
+
         if (isShip)
         {
+            jumpForce = 5f;
+            if (Input.GetMouseButton(0))
+            {
+                // 리지드바디에 위쪽으로 힘을 주기
+                if (playerRigidbody.velocity.y < 15)
+                {
+                    playerRigidbody.AddForce(new Vector2(0, jumpForce));
+                }
+                
+            }
+        }
+
+        if(isShip==false)
+        {
+            // 마우스 왼쪽 버튼을 눌렀으며 && 최대 점프 횟수(2)에 도달하지 않았다면
             if (Input.GetMouseButtonDown(0) && jumpCount < 100)
             {
                 // 점프 횟수 증가
                 jumpCount++;
+                // 점프 직전에 속도를 순간적으로 제로(0, 0)로 변경
+                playerRigidbody.velocity = Vector2.zero;
                 // 리지드바디에 위쪽으로 힘을 주기
                 playerRigidbody.AddForce(new Vector2(0, jumpForce));
+                // 오디오 소스 재생
+                playerAudio.Play();
             }
-        }
-
-        // 마우스 왼쪽 버튼을 눌렀으며 && 최대 점프 횟수(2)에 도달하지 않았다면
-        if (Input.GetMouseButtonDown(0) && jumpCount < 100)
-        {
-            // 점프 횟수 증가
-            jumpCount++;
-            // 점프 직전에 속도를 순간적으로 제로(0, 0)로 변경
-            playerRigidbody.velocity = Vector2.zero;
-            // 리지드바디에 위쪽으로 힘을 주기
-            playerRigidbody.AddForce(new Vector2(0, jumpForce));
-            // 오디오 소스 재생
-            playerAudio.Play();
         }
         
 

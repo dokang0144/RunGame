@@ -5,7 +5,6 @@ public class PlayerController : MonoBehaviour
 {
     public AudioClip deathClip; // 사망시 재생할 오디오 클립
     public float jumpForce = 700f; // 점프 힘
-    private float topSpeed = 10f;
 
     private int jumpCount = 0; // 누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
@@ -48,8 +47,8 @@ public class PlayerController : MonoBehaviour
 
         if(isShip==false)
         {
-            // 마우스 왼쪽 버튼을 눌렀으며 && 최대 점프 횟수(2)에 도달하지 않았다면
-            if (Input.GetMouseButtonDown(0) && jumpCount < 100)
+            // 마우스 왼쪽 버튼을 눌렀으며 && 최대 점프 횟수(1)에 도달하지 않았다면
+            if (Input.GetMouseButtonDown(0) && jumpCount < 1)
             {
                 // 점프 횟수 증가
                 jumpCount++;
@@ -98,12 +97,23 @@ public class PlayerController : MonoBehaviour
         {
             Ship();
         }
+        if (other.tag == "OPortal" && isShip)
+        {
+            OShip();
+        }
     }
 
     private void Ship()
     {
-        // 사망 상태를 true로 변경
+        // 비행을 true로 변경
         isShip = true;
+
+    }
+
+    private void OShip()
+    {
+        // 비행을 false로 변경
+        isShip = false;
 
     }
 

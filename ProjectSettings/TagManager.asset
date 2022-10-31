@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Dead
   - Portal
+  - OPortal
   layers:
   - Default
   - TransparentFX

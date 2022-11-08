@@ -5,6 +5,10 @@ public class PlayerController : MonoBehaviour
 {
     public float jumpForce = 700f; // 점프 힘
 
+    public SpriteRenderer ShipSprite;
+
+    public Sprite[] sprites = new Sprite[2];
+
     private int jumpCount = 0; // 누적 점프 횟수
     private bool isGrounded = false; // 바닥에 닿았는지 나타냄
     private bool isDead = false; // 사망 상태
@@ -15,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        ShipSprite = GetComponent<SpriteRenderer>();
         // 게임 오브젝트로부터 사용할 컴포넌트들을 가져와 변수에 할당
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -30,11 +35,10 @@ public class PlayerController : MonoBehaviour
 
         if (isShip)
         {
-            jumpForce = 5f;
             if (Input.GetMouseButton(0))
             {
                 // 리지드바디에 위쪽으로 힘을 주기
-                if (playerRigidbody.velocity.y < 15)
+                if (playerRigidbody.velocity.y < 20)
                 {
                     playerRigidbody.AddForce(new Vector2(0, jumpForce));
                 }
@@ -86,6 +90,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Ship()
     {
+        ShipSprite.sprite = sprites[1];
+        jumpForce = 10f;
         // 비행을 true로 변경
         isShip = true;
 
@@ -93,6 +99,8 @@ public class PlayerController : MonoBehaviour
 
     private void ShipOff()
     {
+        ShipSprite.sprite = sprites[0];
+        jumpForce = 700f;
         // 비행을 false로 변경
         isShip = false;
 
